@@ -208,6 +208,7 @@ func (dev *DaggerDev) SDK() *SDK {
 		PHP:        &PHPSDK{Dagger: dev},
 		Java:       &JavaSDK{Dagger: dev},
 		Dotnet:     &DotnetSDK{Dagger: dev},
+		Ruby:       &RubySDK{Dagger: dev},
 	}
 }
 
