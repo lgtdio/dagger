@@ -28,6 +28,7 @@
 
 {{- /* Generate class from GraphQL struct query type. */ -}}
 {{ define "object" -}}
+	{{- $objectName := .Name -}}
 	{{- with . -}}
 		{{- if .Fields }}
 			{{- /* Write description. */ -}}
@@ -68,6 +69,21 @@
     def id
       @client.invoke(Node.new(self, @client, 'id'))
     end
+
+    # Return the ID in json
+    # @return [JSON]
+    sig { returns(JSON) }
+    def to_json
+      JSON.from(id)
+    end
+					{{- if IsModuleCode }}
+
+    # Load from the JSON ID sent
+    sig { params(id: string).returns({{ .Name | QueryToClient | FormatName }}) }
+    def from_json(id)
+      return load_{{ $objectName | QueryToClient | ToFuncPart }}_from_id(id)
+    end
+					{{- end }}
 				{{- else }}
 					{{- template "method" $field }}
 				{{- end }}

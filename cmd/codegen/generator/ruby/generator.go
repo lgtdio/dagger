@@ -43,7 +43,7 @@ func (g *RubyGenerator) Generate(_ context.Context, schema *introspection.Schema
 		})
 	}
 
-	tmpl := templates.New(schemaVersion)
+	tmpl := templates.New(schemaVersion, g.Config.ModuleName)
 	data := struct {
 		Schema        *introspection.Schema
 		SchemaVersion string

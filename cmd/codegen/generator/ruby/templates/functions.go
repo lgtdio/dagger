@@ -13,8 +13,9 @@ import (
 	"github.com/dagger/dagger/cmd/codegen/introspection"
 )
 
-func TypescriptTemplateFuncs(
+func RubyTemplateFuncs(
 	schemaVersion string,
+	moduleName string,
 ) template.FuncMap {
 	commonFunc := generator.NewCommonFunctions(schemaVersion, &FormatTypeFunc{})
 	return template.FuncMap{
@@ -46,7 +47,15 @@ func TypescriptTemplateFuncs(
 		"Nodes":               nodes,
 		"Inputs":              inputs,
 		"NodesWithOpts":       nodesWithOpts,
+		"IsModuleCode": func() bool {
+			return moduleName != ""
+		},
+		"ToFuncPart": toFuncPart,
 	}
+}
+
+func toFuncPart(s string) string {
+	return strings.ToLower(strcase.ToSnake(s))
 }
 
 // pascalCase change a type name into pascalCase

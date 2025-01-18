@@ -2,7 +2,7 @@
 
 $LOAD_PATH.unshift('sdk', 'lib')
 
-require 'rubymod'
+require 'dagger_module'
 require 'dagger'
 
 def get_result(parent_name, parent_state, name, inputs)
@@ -16,7 +16,7 @@ def register
     .with_object(
       object: dag
                 .type_def
-                .with_object(name: "Rubymod")
+                .with_object(name: "DaggerModule")
                 .with_function(
                   function: dag
                               .function(
@@ -43,7 +43,7 @@ def main
     dispatch
   else
     # args = ARGV.shift
-    puts get_result("Rubymod", {}, "container-hello", ARGV)
+    puts get_result("DaggerModule", {}, "container-hello", ARGV)
   end
 end
 

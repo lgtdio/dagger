@@ -10,7 +10,7 @@ import (
 var srcs embed.FS
 
 // New creates a new template with all the template dependencies set up.
-func New(schemaVersion string) *template.Template {
+func New(schemaVersion, moduleName string) *template.Template {
 	topLevelTemplate := "api"
 	templateDeps := []string{
 		topLevelTemplate, "object", "method", "method_comment", "method_signature", "types", "enums",
@@ -21,7 +21,7 @@ func New(schemaVersion string) *template.Template {
 		fileNames = append(fileNames, fmt.Sprintf("src/%s.rb.gtpl", tmpl))
 	}
 
-	funcs := TypescriptTemplateFuncs(schemaVersion)
+	funcs := RubyTemplateFuncs(schemaVersion, moduleName)
 	tmpl := template.Must(template.New(topLevelTemplate).Funcs(funcs).ParseFS(srcs, fileNames...))
 	return tmpl
 }
