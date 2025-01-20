@@ -207,7 +207,8 @@ func (m *JavaSdk) ModuleRuntime(
 	javaCtr := m.jreContainer().
 		WithFile(filepath.Join(ModDirPath, "module.jar"), jar).
 		WithWorkdir(ModDirPath).
-		WithEntrypoint([]string{"java", "-XX:UseSVE=0", "-jar", filepath.Join(ModDirPath, "module.jar")})
+		//WithEntrypoint([]string{"java", "-XX:UseSVE=0", "-jar", filepath.Join(ModDirPath, "module.jar")})
+		WithEntrypoint([]string{"/entrypoint", filepath.Join(ModDirPath, "module.jar")})
 
 	return javaCtr, nil
 }
@@ -253,7 +254,10 @@ func (m *JavaSdk) mvnContainer() *dagger.Container {
 func (m *JavaSdk) jreContainer() *dagger.Container {
 	return dag.
 		Container().
-		From(fmt.Sprintf("%s@%s", JavaImage, JavaDigest))
+		From(fmt.Sprintf("%s@%s", JavaImage, JavaDigest)).
+		WithFile("/entrypoint", dag.CurrentModule().Source().File("entrypoint.sh"), dagger.ContainerWithFileOpts{
+			Permissions: 0755,
+		})
 }
 
 func (m *JavaSdk) setModuleConfig(ctx context.Context, modSource *dagger.ModuleSource) error {
