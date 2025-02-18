@@ -5,6 +5,7 @@ import jakarta.json.bind.annotation.JsonbTypeDeserializer;
 import jakarta.json.bind.annotation.JsonbTypeSerializer;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
+import java.util.Optional;
 import javax.lang.model.element.Modifier;
 
 class ScalarVisitor extends AbstractVisitor {
@@ -16,7 +17,7 @@ class ScalarVisitor extends AbstractVisitor {
   TypeSpec generateType(Type type) {
     TypeSpec.Builder classBuilder =
         TypeSpec.classBuilder(Helpers.formatName(type))
-            .addJavadoc(type.getDescription())
+            .addJavadoc(type.getDescription() != null ? type.getDescription() : "")
             .addModifiers(Modifier.PUBLIC)
             .superclass(
                 ParameterizedTypeName.get(
