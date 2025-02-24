@@ -11,14 +11,15 @@ import (
 
 	"dagger.io/dagger"
 	"dagger.io/dagger/telemetry"
-	"github.com/dagger/dagger/dagql/dagui"
-	"github.com/dagger/dagger/dagql/idtui"
-	"github.com/dagger/dagger/engine/client"
 	"github.com/mattn/go-isatty"
 	"github.com/muesli/termenv"
 	"github.com/spf13/cobra"
 	"mvdan.cc/sh/v3/interp"
 	"mvdan.cc/sh/v3/syntax"
+
+	"github.com/dagger/dagger/dagql/dagui"
+	"github.com/dagger/dagger/dagql/idtui"
+	"github.com/dagger/dagger/engine/client"
 )
 
 const (
@@ -45,10 +46,10 @@ var (
 	shellNoLoadModule bool
 )
 
-func init() {
-	shellCmd.Flags().StringVarP(&shellCode, "code", "c", "", "Command to be executed")
-	shellCmd.Flags().BoolVar(&shellNoLoadModule, "no-mod", false, "Don't load module during shell startup (mutually exclusive with --mod)")
-	shellCmd.MarkFlagsMutuallyExclusive("mod", "no-mod")
+func shellAddFlags(cmd *cobra.Command) {
+	cmd.Flags().StringVarP(&shellCode, "code", "c", "", "Command to be executed")
+	cmd.Flags().BoolVar(&shellNoLoadModule, "no-mod", false, "Don't load module during shell startup (mutually exclusive with --mod)")
+	cmd.MarkFlagsMutuallyExclusive("mod", "no-mod")
 }
 
 var shellCmd = &cobra.Command{
